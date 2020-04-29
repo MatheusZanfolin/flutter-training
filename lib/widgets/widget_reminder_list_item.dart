@@ -14,7 +14,8 @@ class DefaultReminderItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: ReminderTitle(_reminder.title),
-      subtitle: ReminderDescription(_reminder.description)
+      subtitle: ReminderDescription(_reminder.description),
+      trailing: Icon(Icons.edit),
     );
   }
 

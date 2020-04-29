@@ -26,6 +26,7 @@ class _MainRouteState extends State<MainRoute> {
       ),
       body: DefaultReminderList(
         reminders: this.reminders,
+        onItemClicked: _editReminder,
         onItemDismissed: _dismissReminder,
       ),
       floatingActionButton: FloatingActionButton(
@@ -39,6 +40,10 @@ class _MainRouteState extends State<MainRoute> {
     _makeReminder().then(_addReminder);
   }
 
+  void _editReminder(ReminderItem item) {
+    _updateReminder(item).then(_replaceReminder);
+  }
+
   void _dismissReminder(int index) => setState(() {
     reminders.removeAt(index);
   });
@@ -50,6 +55,17 @@ class _MainRouteState extends State<MainRoute> {
   void _addReminder(Reminder reminder) => setState(() {
     if (reminder != null) {
       setState(() { reminders.add(reminder); });
+    }
+  });
+
+  Future<ReminderItem> _updateReminder(ReminderItem item) {
+    return Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReminderRoute(edited: item)));
+  }
+
+  void _replaceReminder(ReminderItem item) => setState(() {
+    if (item != null) {
+      reminders.removeAt(item.index);
+      reminders.insert(item.index, item.reminder);
     }
   });
 

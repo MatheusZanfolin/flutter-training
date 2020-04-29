@@ -5,7 +5,13 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_training/models/Reminder.dart';
 import 'package:flutter_training/widgets/widget_mandatory_input.dart';
 
+final int _NOT_EDITING = -1;
+
 class CreateReminderRoute extends StatelessWidget {
+
+  final ReminderItem edited;
+
+  const CreateReminderRoute({Key key, this.edited}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +21,7 @@ class CreateReminderRoute extends StatelessWidget {
         ),
         body: Padding(
           padding: EdgeInsets.all(16),
-          child: CreateReminderForm(),
+          child: CreateReminderForm(edited),
         )
     );
   }
@@ -28,6 +34,17 @@ class CreateReminderForm extends StatelessWidget {
 
   final title = TextEditingController();
   final description = TextEditingController();
+
+  int index = _NOT_EDITING;
+
+  CreateReminderForm(ReminderItem item) {
+    if (item != null) {
+      this.title.text = item.reminder.title;
+      this.description.text = item.reminder.description;
+
+      this.index = item.index;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +88,21 @@ class CreateReminderForm extends StatelessWidget {
   }
 
   void _submitReminder(BuildContext context) {
-    Navigator.of(context).pop(Reminder(title.text, description.text));
+    if (index == _NOT_EDITING) {
+      submitNewReminder(context);
+    } else {
+      submitEditedReminder(context);
+    }
   }
+
+  void submitNewReminder(BuildContext context) {
+    Navigator.of(context).pop(getReminder());
+  }
+
+  void submitEditedReminder(BuildContext context) {
+    Navigator.of(context).pop(ReminderItem(getReminder(), index));
+  }
+
+  Reminder getReminder() => Reminder(title.text, description.text);
 
 }
