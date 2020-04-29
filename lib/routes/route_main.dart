@@ -24,7 +24,10 @@ class _MainRouteState extends State<MainRoute> {
       appBar: AppBar(
         title: Text("Reminders"),
       ),
-      body: DefaultReminderList(reminders: this.reminders),
+      body: DefaultReminderList(
+        reminders: this.reminders,
+        onItemDismissed: _dismissReminder,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _createReminder,
         child: Icon(Icons.add),
@@ -35,6 +38,10 @@ class _MainRouteState extends State<MainRoute> {
   void _createReminder() {
     _makeReminder().then(_addReminder);
   }
+
+  void _dismissReminder(int index) => setState(() {
+    reminders.removeAt(index);
+  });
 
   Future<Reminder> _makeReminder() {
     return Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReminderRoute()));
