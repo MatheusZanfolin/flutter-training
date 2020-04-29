@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_training/models/Reminder.dart';
 import 'package:flutter_training/routes/route_create_reminder.dart';
+import 'package:flutter_training/widgets/widget_reminder_list.dart';
 
 class MainRoute extends StatefulWidget {
 
@@ -15,7 +16,7 @@ class MainRoute extends StatefulWidget {
 
 class _MainRouteState extends State<MainRoute> {
 
-  Reminder reminder = Reminder("Title", "Description");
+  List<Reminder> reminders = [];
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +24,7 @@ class _MainRouteState extends State<MainRoute> {
       appBar: AppBar(
         title: Text("Reminders"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(reminder.title),
-            Text(reminder.description)
-          ],
-        ),
-      ),
+      body: DefaultReminderList(reminders: this.reminders),
       floatingActionButton: FloatingActionButton(
         onPressed: _createReminder,
         child: Icon(Icons.add),
@@ -49,7 +42,7 @@ class _MainRouteState extends State<MainRoute> {
 
   void _addReminder(Reminder reminder) => setState(() {
     if (reminder != null) {
-      setState(() { this.reminder = reminder; });
+      setState(() { reminders.add(reminder); });
     }
   });
 
