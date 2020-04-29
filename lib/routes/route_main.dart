@@ -25,6 +25,7 @@ class _MainRouteState extends State<MainRoute> {
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(reminder.title),
             Text(reminder.description)
