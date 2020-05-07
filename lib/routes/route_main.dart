@@ -16,7 +16,7 @@ class MainRoute extends StatefulWidget {
 
 class _MainRouteState extends State<MainRoute> {
 
-  List<Reminder> reminders = [];
+  List<Reminder> _reminders = [];
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class _MainRouteState extends State<MainRoute> {
       appBar: AppBar(
         title: Text("Reminders"),
       ),
-      body: DefaultReminderList(reminders, _onEditReminder, _onDismissReminder),
+      body: DefaultReminderList(_reminders, _onEditReminder, _onDismissReminder),
       floatingActionButton: FloatingActionButton(
         onPressed: _createReminder,
         child: Icon(Icons.add),
@@ -33,7 +33,7 @@ class _MainRouteState extends State<MainRoute> {
   }
 
   void _onDismissReminder(int index) => setState(() {
-    reminders.removeAt(index);
+    _reminders.removeAt(index);
   });
 
   void _createReminder() {
@@ -54,14 +54,14 @@ class _MainRouteState extends State<MainRoute> {
 
   void _addReminder(Reminder reminder) => setState(() {
     if (reminder != null) {
-      setState(() { reminders.add(reminder); });
+      setState(() { _reminders.add(reminder); });
     }
   });
 
   void _replaceReminder(EditableReminder item) => setState(() {
     if (item != null) {
-      reminders.removeAt(item.index);
-      reminders.insert(item.index, item.reminder);
+      _reminders.removeAt(item.index);
+      _reminders.insert(item.index, item.reminder);
     }
   });
 
