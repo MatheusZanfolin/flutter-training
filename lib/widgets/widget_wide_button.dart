@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_training/models/ButtonStyle.dart';
+import 'package:flutter_training/contracts/ButtonStyle.dart';
 
 class WideButton extends StatelessWidget {
 
