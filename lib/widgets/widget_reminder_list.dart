@@ -9,33 +9,28 @@ typedef void ItemDismissListener(int index);
 
 class DefaultReminderList extends StatelessWidget {
 
-  final List<Reminder> reminders;
-  final ItemClickListener onItemClicked;
-  final ItemDismissListener onItemDismissed;
+  final List<Reminder> _reminders;
+  final ItemClickListener _onItemClicked;
+  final ItemDismissListener _onItemDismissed;
 
-  DefaultReminderList({
-    Key key,
-    @required this.reminders,
-    @required this.onItemClicked,
-    @required this.onItemDismissed
-  });
+  DefaultReminderList(this._reminders, this._onItemClicked, this._onItemDismissed);
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: reminders.length,
+      itemCount: _reminders.length,
 
       separatorBuilder: (context, index) => Divider(color: Colors.grey),
 
       itemBuilder: (context, index) => GestureDetector(
-        onTap: () { onItemClicked(EditableReminder(reminders[index], index)); },
+        onTap: () { _onItemClicked(EditableReminder(_reminders[index], index)); },
 
         child: Dismissible(
           key: UniqueKey(),
 
-          onDismissed: (direction) => onItemDismissed(index),
+          onDismissed: (direction) => _onItemDismissed(index),
 
-          child: DefaultReminderItem(reminders[index]),
+          child: DefaultReminderItem(_reminders[index]),
         ),
       ),
     );

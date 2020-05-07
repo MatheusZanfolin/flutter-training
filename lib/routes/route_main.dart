@@ -24,11 +24,7 @@ class _MainRouteState extends State<MainRoute> {
       appBar: AppBar(
         title: Text("Reminders"),
       ),
-      body: DefaultReminderList(
-        reminders: this.reminders,
-        onItemClicked: _editReminder,
-        onItemDismissed: _dismissReminder,
-      ),
+      body: DefaultReminderList(reminders, _onEditReminder, _onDismissReminder),
       floatingActionButton: FloatingActionButton(
         onPressed: _createReminder,
         child: Icon(Icons.add),
@@ -36,7 +32,7 @@ class _MainRouteState extends State<MainRoute> {
     );
   }
 
-  void _dismissReminder(int index) => setState(() {
+  void _onDismissReminder(int index) => setState(() {
     reminders.removeAt(index);
   });
 
@@ -44,7 +40,7 @@ class _MainRouteState extends State<MainRoute> {
     _makeReminder().then(_addReminder);
   }
 
-  void _editReminder(EditableReminder item) {
+  void _onEditReminder(EditableReminder item) {
     _updateReminder(item).then(_replaceReminder);
   }
 
