@@ -32,15 +32,15 @@ class CreateReminderForm extends StatelessWidget {
 
   final _reminderForm = GlobalKey<FormState>();
 
-  final title = TextEditingController();
-  final description = TextEditingController();
+  final _title = TextEditingController();
+  final _description = TextEditingController();
 
   int index = notEditing;
 
   CreateReminderForm(EditableReminder item) {
     if (item != null) {
-      this.title.text = item.reminder.title;
-      this.description.text = item.reminder.description;
+      this._title.text = item.reminder.title;
+      this._description.text = item.reminder.description;
 
       this.index = item.index;
     }
@@ -52,8 +52,8 @@ class CreateReminderForm extends StatelessWidget {
       key: _reminderForm,
       child: Column(
         children: [
-          MandatoryInput(title, "Title"),
-          MandatoryInput(description, "Description"),
+          MandatoryInput(_title, "Title"),
+          MandatoryInput(_description, "Description"),
           Expanded(
             child: Container(
               alignment: Alignment.bottomCenter,
@@ -103,6 +103,6 @@ class CreateReminderForm extends StatelessWidget {
     Navigator.of(context).pop(EditableReminder(getReminder(), index));
   }
 
-  Reminder getReminder() => Reminder(title.text, description.text);
+  Reminder getReminder() => Reminder(_title.text, _description.text);
 
 }
