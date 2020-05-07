@@ -40,7 +40,7 @@ class _MainRouteState extends State<MainRoute> {
     _makeReminder().then(_addReminder);
   }
 
-  void _editReminder(ReminderItem item) {
+  void _editReminder(EditableReminder item) {
     _updateReminder(item).then(_replaceReminder);
   }
 
@@ -58,11 +58,11 @@ class _MainRouteState extends State<MainRoute> {
     }
   });
 
-  Future<ReminderItem> _updateReminder(ReminderItem item) {
+  Future<EditableReminder> _updateReminder(EditableReminder item) {
     return Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReminderRoute(edited: item)));
   }
 
-  void _replaceReminder(ReminderItem item) => setState(() {
+  void _replaceReminder(EditableReminder item) => setState(() {
     if (item != null) {
       reminders.removeAt(item.index);
       reminders.insert(item.index, item.reminder);

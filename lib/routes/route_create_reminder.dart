@@ -9,7 +9,7 @@ final int _NOT_EDITING = -1;
 
 class CreateReminderRoute extends StatelessWidget {
 
-  final ReminderItem edited;
+  final EditableReminder edited;
 
   const CreateReminderRoute({Key key, this.edited}) : super(key: key);
 
@@ -37,7 +37,7 @@ class CreateReminderForm extends StatelessWidget {
 
   int index = _NOT_EDITING;
 
-  CreateReminderForm(ReminderItem item) {
+  CreateReminderForm(EditableReminder item) {
     if (item != null) {
       this.title.text = item.reminder.title;
       this.description.text = item.reminder.description;
@@ -100,7 +100,7 @@ class CreateReminderForm extends StatelessWidget {
   }
 
   void submitEditedReminder(BuildContext context) {
-    Navigator.of(context).pop(ReminderItem(getReminder(), index));
+    Navigator.of(context).pop(EditableReminder(getReminder(), index));
   }
 
   Reminder getReminder() => Reminder(title.text, description.text);

@@ -8,11 +8,11 @@ class Reminder {
 
 }
 
-class ReminderItem {
+class EditableReminder {
 
   final Reminder reminder;
   final int index;
 
-  ReminderItem(this.reminder, this.index);
+  EditableReminder(this.reminder, this.index);
 
 }
