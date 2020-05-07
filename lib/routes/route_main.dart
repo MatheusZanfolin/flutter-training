@@ -36,6 +36,10 @@ class _MainRouteState extends State<MainRoute> {
     );
   }
 
+  void _dismissReminder(int index) => setState(() {
+    reminders.removeAt(index);
+  });
+
   void _createReminder() {
     _makeReminder().then(_addReminder);
   }
@@ -44,12 +48,12 @@ class _MainRouteState extends State<MainRoute> {
     _updateReminder(item).then(_replaceReminder);
   }
 
-  void _dismissReminder(int index) => setState(() {
-    reminders.removeAt(index);
-  });
-
   Future<Reminder> _makeReminder() {
     return Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReminderRoute()));
+  }
+
+  Future<EditableReminder> _updateReminder(EditableReminder item) {
+    return Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReminderRoute(edited: item)));
   }
 
   void _addReminder(Reminder reminder) => setState(() {
@@ -57,10 +61,6 @@ class _MainRouteState extends State<MainRoute> {
       setState(() { reminders.add(reminder); });
     }
   });
-
-  Future<EditableReminder> _updateReminder(EditableReminder item) {
-    return Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReminderRoute(edited: item)));
-  }
 
   void _replaceReminder(EditableReminder item) => setState(() {
     if (item != null) {
