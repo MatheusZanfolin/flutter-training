@@ -21,14 +21,14 @@ class CreateReminderRoute extends StatelessWidget {
         ),
         body: Padding(
           padding: EdgeInsets.all(16),
-          child: CreateReminderForm(edited),
+          child: ReminderCreationForm(edited),
         )
     );
   }
 
 }
 
-class CreateReminderForm extends StatelessWidget {
+class ReminderCreationForm extends StatelessWidget {
 
   final _reminderForm = GlobalKey<FormState>();
 
@@ -37,7 +37,7 @@ class CreateReminderForm extends StatelessWidget {
 
   int index = notEditing;
 
-  CreateReminderForm(EditableReminder item) {
+  ReminderCreationForm(EditableReminder item) {
     if (item != null) {
       this._title.text = item.reminder.title;
       this._description.text = item.reminder.description;
