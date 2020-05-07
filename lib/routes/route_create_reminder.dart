@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_training/contracts/ButtonStyle.dart';
-import 'package:flutter_training/models/Reminder.dart';
+import 'package:flutter_training/contracts/button_style.dart';
+import 'package:flutter_training/models/reminder.dart';
 import 'package:flutter_training/widgets/widget_mandatory_input.dart';
 import 'package:flutter_training/widgets/widget_wide_button.dart';
 
