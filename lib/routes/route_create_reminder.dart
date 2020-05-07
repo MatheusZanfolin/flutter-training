@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_training/models/Reminder.dart';
 import 'package:flutter_training/widgets/widget_mandatory_input.dart';
 
-final int _NOT_EDITING = -1;
+const notEditing = -1;
 
 class CreateReminderRoute extends StatelessWidget {
 
@@ -35,7 +35,7 @@ class CreateReminderForm extends StatelessWidget {
   final title = TextEditingController();
   final description = TextEditingController();
 
-  int index = _NOT_EDITING;
+  int index = notEditing;
 
   CreateReminderForm(EditableReminder item) {
     if (item != null) {
@@ -88,7 +88,7 @@ class CreateReminderForm extends StatelessWidget {
   }
 
   void _submitReminder(BuildContext context) {
-    if (index == _NOT_EDITING) {
+    if (index == notEditing) {
       submitNewReminder(context);
     } else {
       submitEditedReminder(context);
