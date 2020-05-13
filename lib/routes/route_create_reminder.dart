@@ -59,7 +59,11 @@ class ReminderCreationForm extends StatelessWidget {
           Expanded(
             child: Container(
               alignment: Alignment.bottomCenter,
-              child: WideButton(CallToAction(), () { _createReminder(context); }),
+              child: WideButton(
+                text: "Create Reminder",
+                style: CallToAction(),
+                onButtonPressed: () { _createReminder(context); },
+              ),
             ),
           )
         ],

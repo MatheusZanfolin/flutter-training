@@ -5,10 +5,11 @@ import 'package:flutter_training/contracts/button_style.dart';
 
 class WideButton extends StatelessWidget {
 
-  final VoidCallback _onButtonPressed;
-  final ButtonStyle _style;
+  final String text;
+  final VoidCallback onButtonPressed;
+  final ButtonStyle style;
 
-  WideButton(this._style, this._onButtonPressed);
+  WideButton({this.text, this.style, this.onButtonPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +17,10 @@ class WideButton extends StatelessWidget {
       children: [
         Expanded(
           child: RaisedButton(
-            color: _style.buttonColor,
-            onPressed: _onButtonPressed,
-            child: Text("Create reminder",
-                style: TextStyle(color: _style.textColor)
+            color: style.buttonColor,
+            onPressed: onButtonPressed,
+            child: Text(text,
+                style: TextStyle(color: style.textColor)
             ),
           ),
         )
