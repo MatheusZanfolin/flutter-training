@@ -13,7 +13,6 @@ class MandatoryInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-
       validator: _validateMandatory,
       controller: _controller,
       decoration: InputDecoration(

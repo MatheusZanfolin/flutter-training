@@ -1,15 +1,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_training/contracts/button_style.dart';
 
 class WideButton extends StatelessWidget {
 
-  final String text;
+  final Color background;
   final VoidCallback onButtonPressed;
-  final ButtonStyle style;
+  final Widget child;
 
-  WideButton({this.text, this.style, this.onButtonPressed});
+  WideButton({this.background, this.onButtonPressed, this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +16,9 @@ class WideButton extends StatelessWidget {
       children: [
         Expanded(
           child: RaisedButton(
-            color: style.buttonColor,
+            color: background,
             onPressed: onButtonPressed,
-            child: Text(text,
-                style: TextStyle(color: style.textColor)
-            ),
+            child: child,
           ),
         )
       ],

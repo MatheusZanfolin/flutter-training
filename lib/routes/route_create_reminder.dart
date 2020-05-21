@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_training/contracts/button_style.dart';
 import 'package:flutter_training/models/reminder.dart';
 import 'package:flutter_training/widgets/widget_mandatory_input.dart';
 import 'package:flutter_training/widgets/widget_wide_button.dart';
@@ -60,9 +59,11 @@ class ReminderCreationForm extends StatelessWidget {
             child: Container(
               alignment: Alignment.bottomCenter,
               child: WideButton(
-                text: "Create Reminder",
-                style: CallToAction(),
+                background: Colors.blue,
                 onButtonPressed: () { _createReminder(context); },
+                child: Text("Create reminder",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ),
           )
