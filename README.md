@@ -1,2 +1,3 @@
-# flutter-training
-A simple mobile app, created for training purposes
+# flutter_training
+
+A simple Flutter app. Designed as an exercise to practice some of the platform's basics
