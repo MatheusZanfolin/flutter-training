@@ -1,10 +1,11 @@
 
 class Reminder {
 
-  String title;
-  String description;
+  final int id;
+  final String title;
+  final String description;
 
-  Reminder(this.title, this.description);
+  Reminder(this.title, this.description, [this.id]);
 
 }
 
