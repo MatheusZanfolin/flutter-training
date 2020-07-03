@@ -52,20 +52,20 @@ class ReminderRepository extends LocalRepository {
   @override
   LocalDatabase createDatabase() => MainDatabase();
 
-  void createReminder(Reminder reminder, InsertCallback onReminderSaved) {
-    insert(reminder, ReminderSerializer(), ReminderTable(), onReminderSaved);
+  Future<int> createReminder(Reminder reminder) {
+    return insert(reminder, ReminderSerializer(), ReminderTable());
   }
 
-  void updateReminder(Reminder reminder, UpdateCallback onReminderUpdated) {
-    update(reminder, ReminderSerializer(), ReminderTable(), reminder.id, onReminderUpdated);
+  Future<int> updateReminder(Reminder reminder) {
+    return update(reminder, ReminderSerializer(), ReminderTable(), reminder.id);
   }
 
-  void deleteReminder(Reminder reminder, DeleteCallback onReminderDeleted) {
-    delete(reminder.id, ReminderTable(), onReminderDeleted);
+  Future<int> deleteReminder(Reminder reminder) {
+    return delete(reminder.id, ReminderTable());
   }
 
-  void getReminders(GetCallback<Reminder> onRemindersAcquired) {
-    get(ReminderTable(), ReminderDeserializer(), onRemindersAcquired);
+  Future<List<Reminder>> getReminders() {
+    return get(ReminderTable(), ReminderDeserializer());
   }
 
 }

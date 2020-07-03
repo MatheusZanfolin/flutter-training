@@ -39,60 +39,50 @@ abstract class LocalRepository {
 
   LocalDatabase createDatabase();
 
-  void performAtDatabase(DatabaseCallback onDatabaseOpened) {
-    _open(createDatabase()).then(onDatabaseOpened);
+  Future<D> performAtDatabase<D>(DatabaseCallback<D> onDatabaseOpened) {
+    return _open(createDatabase()).then(onDatabaseOpened);
   }
 
   @protected
-  void insert<D>(D data, Serializer<D> serializer, Table table, InsertCallback onRowInserted) {
-    performAtDatabase((db) {
+  Future<int> insert<D>(D data, Serializer<D> serializer, Table table) =>
+    performAtDatabase((db) =>
       db.insert(
-          table.getName(),
-          serializer.serialize(data),
-          conflictAlgorithm: ConflictAlgorithm.replace
-      ).then(
-          onRowInserted
-      );
-    });
-  }
+        table.getName(),
+        serializer.serialize(data),
+        conflictAlgorithm: ConflictAlgorithm.replace
+      )
+    );
 
   @protected
-  void get(Table table, Deserializer deserializer, GetCallback onRowsAcquired) {
-    performAtDatabase((db) {
+  Future<List<D>> get<D>(Table table, Deserializer<D> deserializer) =>
+    performAtDatabase((db) =>
       db.query(
-          table.getName()
-      ).then((result) => onRowsAcquired(
-          List.generate(result.length, (i) => deserializer.deserialize(result[i])))
-      );
-    });
-  }
+        table.getName()
+      ).then((result) =>
+        Future.value(List.generate(result.length, (i) => deserializer.deserialize(result[i])))
+      )
+    );
 
   @protected
-  void update<D>(D data, Serializer serializer, Table table, int id, UpdateCallback onRowsUpdated) {
-    performAtDatabase((db) {
+  Future<int> update<D>(D data, Serializer serializer, Table table, int id) =>
+    performAtDatabase((db) =>
       db.update(
-          table.getName(),
-          serializer.serialize(data),
-          where: 'id = ?',
-          whereArgs: [id]
-      ).then(
-          onRowsUpdated
-      );
-    });
-  }
+        table.getName(),
+        serializer.serialize(data),
+        where: 'id = ?',
+        whereArgs: [id]
+      )
+    );
 
   @protected
-  void delete(int id, Table table, DeleteCallback onRowsDeleted) {
-    performAtDatabase((db) {
+  Future<int> delete(int id, Table table) =>
+    performAtDatabase((db) =>
       db.delete(
-          table.getName(),
-          where: 'id = ?',
-          whereArgs: [id]
-      ).then(
-          onRowsDeleted
-      );
-    });
-  }
+        table.getName(),
+        where: 'id = ?',
+        whereArgs: [id]
+      )
+    );
 
   Future<Database> _open(LocalDatabase database) async => openDatabase(
       join(await getDatabasesPath(), database.getFile()),
@@ -112,12 +102,4 @@ abstract class LocalRepository {
 
 }
 
-typedef DatabaseCallback = void Function(Database);
-
-typedef InsertCallback = void Function(int newId);
-
-typedef GetCallback<T> = void Function(List<T>);
-
-typedef DeleteCallback = void Function(int affectedRows);
-
-typedef UpdateCallback = void Function(int affectedRows);
+typedef DatabaseCallback<D> = Future<D> Function(Database);
