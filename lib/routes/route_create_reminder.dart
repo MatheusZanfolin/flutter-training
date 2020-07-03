@@ -36,8 +36,11 @@ class ReminderCreationForm extends StatelessWidget {
   final _title = TextEditingController();
   final _description = TextEditingController();
 
+  int _reminderId;
+
   ReminderCreationForm(Reminder item) {
     if (item != null) {
+      this._reminderId = item.id;
       this._title.text = item.title;
       this._description.text = item.description;
     }
@@ -82,6 +85,6 @@ class ReminderCreationForm extends StatelessWidget {
     Navigator.of(context).pop(getReminder());
   }
 
-  Reminder getReminder() => Reminder(_title.text, _description.text);
+  Reminder getReminder() => Reminder(_title.text, _description.text, _reminderId);
 
 }
