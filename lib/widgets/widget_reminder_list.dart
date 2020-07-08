@@ -4,8 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_training/models/reminder.dart';
 import 'package:flutter_training/widgets/widget_reminder_list_item.dart';
 
-typedef void ItemClickListener(EditableReminder clicked);
-typedef void ItemDismissListener(int index);
+typedef void ItemClickListener(Reminder clicked);
+typedef void ItemDismissListener(Reminder dismissed);
 
 class DefaultReminderList extends StatelessWidget {
 
@@ -23,12 +23,12 @@ class DefaultReminderList extends StatelessWidget {
       separatorBuilder: (context, index) => Divider(color: Colors.grey),
 
       itemBuilder: (context, index) => GestureDetector(
-        onTap: () { _onItemClicked(EditableReminder(_reminders[index], index)); },
+        onTap: () { _onItemClicked(_reminders[index]); },
 
         child: Dismissible(
           key: UniqueKey(),
 
-          onDismissed: (direction) => _onItemDismissed(index),
+          onDismissed: (direction) => _onItemDismissed(_reminders[index]),
 
           child: DefaultReminderItem(_reminders[index]),
         ),

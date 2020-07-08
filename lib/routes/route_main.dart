@@ -1,8 +1,10 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_training/models/reminder.dart';
 import 'package:flutter_training/routes/route_create_reminder.dart';
+import 'package:flutter_training/persistence/database/database_main.dart';
 import 'package:flutter_training/widgets/widget_reminder_list.dart';
 
 class MainRoute extends StatefulWidget {
@@ -16,15 +18,16 @@ class MainRoute extends StatefulWidget {
 
 class _MainRouteState extends State<MainRoute> {
 
-  List<Reminder> _reminders = [];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Reminders"),
       ),
-      body: DefaultReminderList(_reminders, _onEditReminder, _onDismissReminder),
+      body: FutureBuilder(
+        future: ReminderRepository().getReminders(),
+        builder: mainViewBuilder,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _createReminder,
         child: Icon(Icons.add),
@@ -32,15 +35,57 @@ class _MainRouteState extends State<MainRoute> {
     );
   }
 
-  void _onDismissReminder(int index) => setState(() {
-    _reminders.removeAt(index);
+  Widget mainViewBuilder(context, AsyncSnapshot snapshot) {
+    if (snapshot.hasData) {
+      return listView(snapshot.data);
+    } else if (snapshot.hasError) {
+      return errorView(snapshot.error);
+    } else {
+      return loadingView();
+    }
+  }
+
+  Widget listView(reminders) => DefaultReminderList(
+    reminders, _onEditReminder, _onDismissReminder
+  );
+
+  Widget errorView(error) => SizedBox.expand(
+    child: Column(
+      children: <Widget>[
+        Icon(
+          Icons.error_outline,
+          color: Colors.red,
+          size: 60,
+        )
+      ],
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+    ),
+  );
+
+  Widget loadingView() => SizedBox.expand(
+    child: Column(
+      children: <Widget>[
+        SizedBox(
+          child: CircularProgressIndicator(),
+          width: 60,
+          height: 60,
+        )
+      ],
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+    ),
+  );
+
+  void _onDismissReminder(reminder) => setState(() {
+    ReminderRepository().deleteReminder(reminder);
   });
 
   void _createReminder() {
     _makeReminder().then(_addReminder);
   }
 
-  void _onEditReminder(EditableReminder item) {
+  void _onEditReminder(item) {
     _updateReminder(item).then(_replaceReminder);
   }
 
@@ -48,20 +93,19 @@ class _MainRouteState extends State<MainRoute> {
     return Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReminderRoute()));
   }
 
-  Future<EditableReminder> _updateReminder(EditableReminder item) {
+  Future<Reminder> _updateReminder(Reminder item) {
     return Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReminderRoute(edited: item)));
   }
 
-  void _addReminder(Reminder reminder) => setState(() {
+  void _addReminder(reminder) => setState(() {
     if (reminder != null) {
-      setState(() { _reminders.add(reminder); });
+      ReminderRepository().createReminder(reminder);
     }
   });
 
-  void _replaceReminder(EditableReminder item) => setState(() {
-    if (item != null) {
-      _reminders.removeAt(item.index);
-      _reminders.insert(item.index, item.reminder);
+  void _replaceReminder(reminder) => setState(() {
+    if (reminder != null) {
+      ReminderRepository().updateReminder(reminder);
     }
   });
 
