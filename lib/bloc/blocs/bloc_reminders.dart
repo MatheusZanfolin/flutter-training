@@ -7,8 +7,8 @@ import 'package:flutter_training/persistence/database/database_main.dart';
 
 class RemindersBloc extends BLoC<List<Reminder>> {
 
-  final repository = ReminderRepository();
+  final _repository = ReminderRepository();
 
-  void getReminders() => repository.getReminders().then(sink.add);
+  void getReminders() => _repository.getReminders().then(sink.add);
 
 }
