@@ -12,8 +12,6 @@ abstract class BLoC<T> {
   @protected
   StreamSink<T> get sink => _controller.sink;
 
-  void dispose() {
-    _controller.close();
-  }
+  void dispose() => _controller.close();
 
 }
