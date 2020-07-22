@@ -23,9 +23,7 @@ class _MainRouteState extends State<MainRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Reminders"),
-      ),
+      appBar: AppBar(title: Text("Reminders")),
       body: StreamBuilder(
         stream: reminders.stream,
         builder: (context, snapshot) => AsyncBuilder(
