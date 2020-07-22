@@ -27,7 +27,7 @@ class _MainRouteState extends State<MainRoute> {
       body: StreamBuilder(
         stream: reminders.stream,
         builder: (context, snapshot) => AsyncBuilder(
-          snapshot: snapshot,
+          data: snapshot,
           onDataAbsent: reminders.refresh,
           child: DefaultReminderList(snapshot.data, _onEditReminder, _onDismissReminder),
           loadingIcon: LoadingIcon(),
@@ -109,14 +109,14 @@ class LoadingIcon extends StatelessWidget {
 
 class AsyncBuilder extends StatelessWidget {
 
-  final AsyncSnapshot snapshot;
+  final AsyncSnapshot data;
   final Widget child;
   final Widget errorIcon;
   final Widget loadingIcon;
   final VoidCallback onDataAbsent;
 
   AsyncBuilder({
-    @required this.snapshot,
+    @required this.data,
     @required this.child,
     @required this.errorIcon,
     @required this.loadingIcon,
@@ -125,9 +125,9 @@ class AsyncBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (snapshot.hasData) {
+    if (data.hasData) {
       return child;
-    } else if (snapshot.hasError) {
+    } else if (data.hasError) {
       return errorIcon;
     } else {
       onDataAbsent();
