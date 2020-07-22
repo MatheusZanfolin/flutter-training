@@ -2,9 +2,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_training/bloc/blocs/bloc_reminders.dart';
 import 'package:flutter_training/models/reminder.dart';
 import 'package:flutter_training/routes/route_create_reminder.dart';
-import 'package:flutter_training/persistence/database/database_main.dart';
 import 'package:flutter_training/widgets/widget_reminder_list.dart';
 
 class MainRoute extends StatefulWidget {
@@ -18,15 +18,17 @@ class MainRoute extends StatefulWidget {
 
 class _MainRouteState extends State<MainRoute> {
 
+  final reminders = RemindersBloc();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Reminders"),
       ),
-      body: FutureBuilder(
-        future: ReminderRepository().getReminders(),
-        builder: mainViewBuilder,
+      body: StreamBuilder(
+        stream: reminders.stream,
+        builder: _mainViewBuilder,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _createReminder,
@@ -35,7 +37,7 @@ class _MainRouteState extends State<MainRoute> {
     );
   }
 
-  Widget mainViewBuilder(context, AsyncSnapshot snapshot) {
+  Widget _mainViewBuilder(context, AsyncSnapshot snapshot) {
     if (snapshot.hasData) {
       return listView(snapshot.data);
     } else if (snapshot.hasError) {
@@ -77,16 +79,16 @@ class _MainRouteState extends State<MainRoute> {
     ),
   );
 
-  void _onDismissReminder(reminder) => setState(() {
-    ReminderRepository().deleteReminder(reminder);
-  });
-
   void _createReminder() {
-    _makeReminder().then(_addReminder);
+    _makeReminder().then((reminder) => setState(() { reminders.create(reminder); }));
   }
 
   void _onEditReminder(item) {
-    _updateReminder(item).then(_replaceReminder);
+    _updateReminder(item).then((reminder) => setState(() { reminders.update(reminder); }));
+  }
+
+  void _onDismissReminder(reminder) {
+    setState(() { reminders.delete(reminder); });
   }
 
   Future<Reminder> _makeReminder() {
@@ -97,16 +99,10 @@ class _MainRouteState extends State<MainRoute> {
     return Navigator.push(context, MaterialPageRoute(builder: (context) => CreateReminderRoute(edited: item)));
   }
 
-  void _addReminder(reminder) => setState(() {
-    if (reminder != null) {
-      ReminderRepository().createReminder(reminder);
-    }
-  });
-
-  void _replaceReminder(reminder) => setState(() {
-    if (reminder != null) {
-      ReminderRepository().updateReminder(reminder);
-    }
-  });
+  @override
+  void dispose() {
+    reminders.dispose();
+    super.dispose();
+  }
 
 }
