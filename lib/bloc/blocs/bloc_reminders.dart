@@ -7,24 +7,26 @@ class RemindersBloc extends BLoC<List<Reminder>> {
 
   final _repository = ReminderRepository();
 
+  void refresh() => _repository.getReminders().then(sink.add);
+
   void create(Reminder reminder) {
     if (reminder != null) {
-      _repository.createReminder(reminder);
+      _perform(_repository.createReminder(reminder));
     }
   }
 
   void update(Reminder reminder) {
     if (reminder != null) {
-      _repository.updateReminder(reminder);
+      _perform(_repository.updateReminder(reminder));
     }
   }
 
   void delete(Reminder reminder) {
     if (reminder != null) {
-      _repository.deleteReminder(reminder);
+      _perform(_repository.deleteReminder(reminder));
     }
   }
 
-  void _refreshReminders() => _repository.getReminders().then(sink.add);
+  void _perform(Future operation) => operation.then((result) => refresh());
 
 }

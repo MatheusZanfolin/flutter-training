@@ -28,7 +28,13 @@ class _MainRouteState extends State<MainRoute> {
       ),
       body: StreamBuilder(
         stream: reminders.stream,
-        builder: _mainViewBuilder,
+        builder: (context, snapshot) => AsyncBuilder(
+          snapshot: snapshot,
+          onDataAbsent: reminders.refresh,
+          child: DefaultReminderList(snapshot.data, _onEditReminder, _onDismissReminder),
+          loadingIcon: LoadingIcon(),
+          errorIcon: ErrorIcon(),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _createReminder,
@@ -36,48 +42,6 @@ class _MainRouteState extends State<MainRoute> {
       ),
     );
   }
-
-  Widget _mainViewBuilder(context, AsyncSnapshot snapshot) {
-    if (snapshot.hasData) {
-      return listView(snapshot.data);
-    } else if (snapshot.hasError) {
-      return errorView(snapshot.error);
-    } else {
-      return loadingView();
-    }
-  }
-
-  Widget listView(reminders) => DefaultReminderList(
-    reminders, _onEditReminder, _onDismissReminder
-  );
-
-  Widget errorView(error) => SizedBox.expand(
-    child: Column(
-      children: <Widget>[
-        Icon(
-          Icons.error_outline,
-          color: Colors.red,
-          size: 60,
-        )
-      ],
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-    ),
-  );
-
-  Widget loadingView() => SizedBox.expand(
-    child: Column(
-      children: <Widget>[
-        SizedBox(
-          child: CircularProgressIndicator(),
-          width: 60,
-          height: 60,
-        )
-      ],
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-    ),
-  );
 
   void _createReminder() {
     _makeReminder().then((reminder) => setState(() { reminders.create(reminder); }));
@@ -103,6 +67,75 @@ class _MainRouteState extends State<MainRoute> {
   void dispose() {
     reminders.dispose();
     super.dispose();
+  }
+
+}
+
+class ErrorIcon extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) => SizedBox.expand(
+    child: Column(
+      children: <Widget>[
+        Icon(
+          Icons.error_outline,
+          color: Colors.red,
+          size: 60,
+        )
+      ],
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+    ),
+  );
+
+}
+
+class LoadingIcon extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) => SizedBox.expand(
+    child: Column(
+      children: <Widget>[
+        SizedBox(
+          child: CircularProgressIndicator(),
+          width: 60,
+          height: 60,
+        )
+      ],
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+    ),
+  );
+
+}
+
+class AsyncBuilder extends StatelessWidget {
+
+  final AsyncSnapshot snapshot;
+  final Widget child;
+  final Widget errorIcon;
+  final Widget loadingIcon;
+  final VoidCallback onDataAbsent;
+
+  AsyncBuilder({
+    @required this.snapshot,
+    @required this.child,
+    @required this.errorIcon,
+    @required this.loadingIcon,
+    @required this.onDataAbsent
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    if (snapshot.hasData) {
+      return child;
+    } else if (snapshot.hasError) {
+      return errorIcon;
+    } else {
+      onDataAbsent();
+
+      return loadingIcon;
+    }
   }
 
 }
