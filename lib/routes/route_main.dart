@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_training/bloc/blocs/bloc_reminders.dart';
 import 'package:flutter_training/models/reminder.dart';
 import 'package:flutter_training/routes/route_create_reminder.dart';
+import 'package:flutter_training/widgets/widget_async_builder.dart';
 import 'package:flutter_training/widgets/widget_reminder_list.dart';
 
 class MainRoute extends StatefulWidget {
@@ -30,8 +31,6 @@ class _MainRouteState extends State<MainRoute> {
           data: snapshot,
           onDataAbsent: reminders.refresh,
           child: DefaultReminderList(snapshot.data, _onEditReminder, _onDismissReminder),
-          loadingIcon: LoadingIcon(),
-          errorIcon: ErrorIcon(),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -65,75 +64,6 @@ class _MainRouteState extends State<MainRoute> {
   void dispose() {
     reminders.dispose();
     super.dispose();
-  }
-
-}
-
-class ErrorIcon extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) => SizedBox.expand(
-    child: Column(
-      children: <Widget>[
-        Icon(
-          Icons.error_outline,
-          color: Colors.red,
-          size: 60,
-        )
-      ],
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-    ),
-  );
-
-}
-
-class LoadingIcon extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) => SizedBox.expand(
-    child: Column(
-      children: <Widget>[
-        SizedBox(
-          child: CircularProgressIndicator(),
-          width: 60,
-          height: 60,
-        )
-      ],
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-    ),
-  );
-
-}
-
-class AsyncBuilder extends StatelessWidget {
-
-  final AsyncSnapshot data;
-  final Widget child;
-  final Widget errorIcon;
-  final Widget loadingIcon;
-  final VoidCallback onDataAbsent;
-
-  AsyncBuilder({
-    @required this.data,
-    @required this.child,
-    @required this.errorIcon,
-    @required this.loadingIcon,
-    @required this.onDataAbsent
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (data.hasData) {
-      return child;
-    } else if (data.hasError) {
-      return errorIcon;
-    } else {
-      onDataAbsent();
-
-      return loadingIcon;
-    }
   }
 
 }
