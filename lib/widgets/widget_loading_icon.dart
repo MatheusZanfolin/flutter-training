@@ -7,6 +7,8 @@ class LoadingIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SizedBox.expand(
     child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         SizedBox(
           child: CircularProgressIndicator(),
@@ -14,8 +16,6 @@ class LoadingIcon extends StatelessWidget {
           height: 60,
         )
       ],
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
     ),
   );
 

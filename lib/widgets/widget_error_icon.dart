@@ -7,6 +7,8 @@ class ErrorIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) => SizedBox.expand(
     child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Icon(
           Icons.error_outline,
@@ -14,8 +16,6 @@ class ErrorIcon extends StatelessWidget {
           size: 60,
         )
       ],
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
     ),
   );
 
