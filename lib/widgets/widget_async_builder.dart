@@ -1,26 +1,20 @@
 
-
-
 import 'package:flutter/widgets.dart';
-import 'package:flutter_training/widgets/widget_error_icon.dart';
-import 'package:flutter_training/widgets/widget_loading_icon.dart';
 
 class AsyncBuilder extends StatelessWidget {
 
   final VoidCallback onDataAbsent;
   final AsyncSnapshot data;
   final Widget child;
-
-  Widget errorIcon = ErrorIcon();
-  Widget loadingIcon = LoadingIcon();
+  final Widget errorIcon;
+  final Widget loadingIcon;
 
   AsyncBuilder({
     @required this.data,
     @required this.child,
     @required this.onDataAbsent,
-
-    this.errorIcon,
-    this.loadingIcon,
+    @required this.errorIcon,
+    @required this.loadingIcon,
   });
 
   @override

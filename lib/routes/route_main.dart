@@ -6,6 +6,8 @@ import 'package:flutter_training/bloc/blocs/bloc_reminders.dart';
 import 'package:flutter_training/models/reminder.dart';
 import 'package:flutter_training/routes/route_create_reminder.dart';
 import 'package:flutter_training/widgets/widget_async_builder.dart';
+import 'package:flutter_training/widgets/widget_error_icon.dart';
+import 'package:flutter_training/widgets/widget_loading_icon.dart';
 import 'package:flutter_training/widgets/widget_reminder_list.dart';
 
 class MainRoute extends StatefulWidget {
@@ -30,6 +32,8 @@ class _MainRouteState extends State<MainRoute> {
         builder: (context, snapshot) => AsyncBuilder(
           data: snapshot,
           onDataAbsent: reminders.refresh,
+          loadingIcon: LoadingIcon(),
+          errorIcon: ErrorIcon(),
           child: DefaultReminderList(snapshot.data, _onEditReminder, _onDismissReminder),
         ),
       ),
